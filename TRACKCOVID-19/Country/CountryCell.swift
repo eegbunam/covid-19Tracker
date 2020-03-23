@@ -64,14 +64,15 @@ class CountryCell: UITableViewCell {
         print(globalwidth)
         let height :CGFloat = 80
         print(globalheight)
-        let size = CGSize(width: globalwidth/2, height: height)
-        let point = CGPoint(x: 12, y: 10)
+        let size = CGSize(width: 90, height: 90)
+        let point = CGPoint(x: 12, y: 5)
         CountryImage.frame = CGRect(origin: point, size: size)
         CountryImage.clipsToBounds = true
-        CountryImage.layer.cornerRadius = 10
-        CountryImage.backgroundColor = .clear
+        CountryImage.layer.cornerRadius = 1/2
+            * CountryImage.frame.width
+        CountryImage.backgroundColor = .gray
         CountryImage.alpha = 0.9
-        CountryImage.contentMode = .scaleAspectFit
+        CountryImage.contentMode = .scaleAspectFill
         
     }
     
