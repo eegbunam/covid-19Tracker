@@ -1,0 +1,7 @@
+{
+    "trackcovid": {
+        "configLevel": "project",
+        "useProfile": true,
+        "profileName": "ebukaAWS"
+    }
+}

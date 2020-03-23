@@ -1,0 +1,15 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-trackcovid-19-trackcovid-200330-authRole",
+            "UnauthRoleArn": "arn:aws:iam::544932425730:role/amplify-trackcovid-19-trackcovid-200330-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::544932425730:role/amplify-trackcovid-19-trackcovid-200330-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-trackcovid-19-trackcovid-200330-deployment",
+            "UnauthRoleName": "amplify-trackcovid-19-trackcovid-200330-unauthRole",
+            "StackName": "amplify-trackcovid-19-trackcovid-200330",
+            "StackId": "arn:aws:cloudformation:us-west-2:544932425730:stack/amplify-trackcovid-19-trackcovid-200330/e2c76bc0-6cb2-11ea-b4f7-0ab2e05eab74",
+            "AmplifyAppId": "d2ab6mcqk2yqys"
+        }
+    }
+}
