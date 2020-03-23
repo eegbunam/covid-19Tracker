@@ -18,11 +18,12 @@
 		4386AECA24289F1200225F66 /* IsoCountryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4386AEC924289F1200225F66 /* IsoCountryInfo.swift */; };
 		43E37F8024276EE9001F3505 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E37F7F24276EE9001F3505 /* AppDelegate.swift */; };
 		43E37F8224276EE9001F3505 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E37F8124276EE9001F3505 /* SceneDelegate.swift */; };
-		43E37F8424276EE9001F3505 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E37F8324276EE9001F3505 /* ViewController.swift */; };
+		43E37F8424276EE9001F3505 /* CountryListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E37F8324276EE9001F3505 /* CountryListVC.swift */; };
 		43E37F8724276EE9001F3505 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43E37F8524276EE9001F3505 /* Main.storyboard */; };
 		43E37F8924276EED001F3505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43E37F8824276EED001F3505 /* Assets.xcassets */; };
 		43E37F8C24276EED001F3505 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43E37F8A24276EED001F3505 /* LaunchScreen.storyboard */; };
 		43FDBB89242954DE00DE363D /* segmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FDBB88242954DE00DE363D /* segmentView.swift */; };
+		43FDBB8C24297CC000DE363D /* EachCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FDBB8B24297CC000DE363D /* EachCountryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,12 +39,13 @@
 		43E37F7C24276EE9001F3505 /* TRACKCOVID-19.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TRACKCOVID-19.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43E37F7F24276EE9001F3505 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43E37F8124276EE9001F3505 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		43E37F8324276EE9001F3505 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		43E37F8324276EE9001F3505 /* CountryListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryListVC.swift; sourceTree = "<group>"; };
 		43E37F8624276EE9001F3505 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43E37F8824276EED001F3505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E37F8B24276EED001F3505 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43E37F8D24276EED001F3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43FDBB88242954DE00DE363D /* segmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = segmentView.swift; sourceTree = "<group>"; };
+		43FDBB8B24297CC000DE363D /* EachCountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EachCountryViewController.swift; sourceTree = "<group>"; };
 		668A0CB2E737BFFD3B8F2C2B /* Pods_TRACKCOVID_19.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TRACKCOVID_19.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C19A9C5F63531F08DB9738 /* Pods-TRACKCOVID-19.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRACKCOVID-19.debug.xcconfig"; path = "Target Support Files/Pods-TRACKCOVID-19/Pods-TRACKCOVID-19.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,7 +75,7 @@
 		4386AEBF24284AC400225F66 /* Country */ = {
 			isa = PBXGroup;
 			children = (
-				43E37F8324276EE9001F3505 /* ViewController.swift */,
+				43E37F8324276EE9001F3505 /* CountryListVC.swift */,
 				4386AEC024284F2F00225F66 /* CountryCell.swift */,
 				43FDBB88242954DE00DE363D /* segmentView.swift */,
 			);
@@ -123,6 +125,7 @@
 				4386AEC2242873C000225F66 /* DataService */,
 				4386AEB42428466A00225F66 /* Extenions-Utilities */,
 				43E37F7F24276EE9001F3505 /* AppDelegate.swift */,
+				43FDBB8A24297B7A00DE363D /* EachCountry */,
 				4386AEBF24284AC400225F66 /* Country */,
 				43E37F8124276EE9001F3505 /* SceneDelegate.swift */,
 				43E37F8524276EE9001F3505 /* Main.storyboard */,
@@ -131,6 +134,14 @@
 				43E37F8D24276EED001F3505 /* Info.plist */,
 			);
 			path = "TRACKCOVID-19";
+			sourceTree = "<group>";
+		};
+		43FDBB8A24297B7A00DE363D /* EachCountry */ = {
+			isa = PBXGroup;
+			children = (
+				43FDBB8B24297CC000DE363D /* EachCountryViewController.swift */,
+			);
+			path = EachCountry;
 			sourceTree = "<group>";
 		};
 		8D7CE22C0AA1BA2676C4E853 /* Frameworks */ = {
@@ -268,7 +279,7 @@
 				4386AEC124284F2F00225F66 /* CountryCell.swift in Sources */,
 				4386AEB8242846AE00225F66 /* Images.swift in Sources */,
 				43FDBB89242954DE00DE363D /* segmentView.swift in Sources */,
-				43E37F8424276EE9001F3505 /* ViewController.swift in Sources */,
+				43E37F8424276EE9001F3505 /* CountryListVC.swift in Sources */,
 				4386AECA24289F1200225F66 /* IsoCountryInfo.swift in Sources */,
 				43E37F8024276EE9001F3505 /* AppDelegate.swift in Sources */,
 				4386AEBA2428471E00225F66 /* Extentions.swift in Sources */,
@@ -277,6 +288,7 @@
 				4386AEB62428468500225F66 /* Constants.swift in Sources */,
 				4386AEC6242873DA00225F66 /* Request.swift in Sources */,
 				4386AEC4242873DA00225F66 /* DataService.swift in Sources */,
+				43FDBB8C24297CC000DE363D /* EachCountryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

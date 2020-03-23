@@ -14,8 +14,8 @@ class DataService : Decodable {
    static let sharedClient = DataService()
     
     func getAllCountryData(completion :@escaping ( _ data : CovidInfo?) -> ()){
-        let headers = Contsants.DataServiceConstants.Covid19Services.headers
-        let request = NSMutableURLRequest(url: Contsants.DataServiceConstants.Covid19Services.generalURL ,
+        let headers = Constants.DataServiceConstants.Covid19Services.headers
+        let request = NSMutableURLRequest(url: Constants.DataServiceConstants.Covid19Services.generalURL ,
                                                 cachePolicy: .useProtocolCachePolicy,
                                             timeoutInterval: 10.0)
         request.httpMethod = "GET"

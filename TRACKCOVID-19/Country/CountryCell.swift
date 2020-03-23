@@ -12,13 +12,15 @@ class CountryCell: UITableViewCell {
     
     var CountryImage = UIImageView()
     var CountryName = UILabel()
+    var circleBorder = CALayer()
+    var SecondcircleBorder = CALayer()
     
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .black
-        CountryName.textColor = .white
+        CountryName.textColor = .black
         
         addSubview(CountryImage)
         addSubview(CountryName)
@@ -28,7 +30,6 @@ class CountryCell: UITableViewCell {
         setImageContraints()
         setLabelContraints()
         
-    
         
     }
     
@@ -87,7 +88,7 @@ class CountryCell: UITableViewCell {
         CountryName.clipsToBounds = true
         CountryName.numberOfLines = 0
         CountryName.adjustsFontSizeToFitWidth = true
-        CountryName.backgroundColor = UIColor.init(hex: Contsants.darkblue)
+        CountryName.backgroundColor = UIColor.init(hex: Constants.darkblue)
         CountryName.layer.cornerRadius = 10
         CountryName.textAlignment = .center
         CountryName.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
@@ -109,6 +110,33 @@ class CountryCell: UITableViewCell {
         CountryName.leadingAnchor.constraint(equalTo: CountryImage.trailingAnchor, constant: 20).isActive = true
         CountryName.heightAnchor.constraint(equalToConstant: 80).isActive = true
         CountryName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
+
+    }
+    
+    
+    private func drawCircle(onImageView imageView: UIImageView , withColor color : CGColor , andTagToRemove _tag: Int, withlayer _layer : CALayer ) {
+        circleBorder.backgroundColor = UIColor.clear.cgColor
+        circleBorder.borderWidth = 3.0
+        circleBorder.borderColor = color
+        circleBorder.bounds = imageView.bounds
+        circleBorder.position = CGPoint(x: imageView.bounds.midX, y: imageView.bounds.midY)
+        circleBorder.cornerRadius = self.frame.size.width / 2
+        layer.insertSublayer(circleBorder, at: 0)
+    
+
+    }
+    private func drawSecondCircle(onImageView imageView: UIImageView , withColor color : CGColor , andTagToRemove _tag: Int, withlayer _layer : CALayer ) {
+      //this function is fragile and not stable
+        
+        
+        SecondcircleBorder.backgroundColor = UIColor.clear.cgColor
+        SecondcircleBorder.borderWidth = 6.0
+        SecondcircleBorder.borderColor = color
+        SecondcircleBorder.bounds = layer.bounds
+        SecondcircleBorder.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
+        SecondcircleBorder.cornerRadius = layer.frame.size.width / 2
+        layer.insertSublayer(SecondcircleBorder, at: 0)
+    
 
     }
 }

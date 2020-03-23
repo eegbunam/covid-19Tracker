@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CountryListVC: UIViewController {
     
     var countryListTableView = UITableView()
     var covidList = [CovidStats]()
@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Pick a Country"
+        setupnavigationBar()
+        
         configureTableView()
         DataService.sharedClient.getAllCountryData { [weak self] (data) in
             guard let data = data else { return }
@@ -30,6 +32,17 @@ class ViewController: UIViewController {
             
         }
         
+    }
+    
+    func setupnavigationBar(){
+        
+        navigationController?.navigationBar.backgroundColor = UIColor.init(hex: Constants.darkblue)
+        navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.barTintColor = UIColor.black
+        let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white , .font: font , .strokeColor:  UIColor.white]
+        navigationController?.navigationBar.barStyle = UIBarStyle.black
+        navigationController?.navigationBar.tintColor = UIColor.white
     }
     
     func removeAllDuplicates(stats : [CovidStats])-> [CovidStats]{
@@ -91,14 +104,14 @@ class ViewController: UIViewController {
     }
     
     
-
+    
     func configureTableView(){
         view.addSubview(countryListTableView)
         countryListTableView.delegate = self
         countryListTableView.dataSource = self
         countryListTableView.rowHeight = 100
         countryListTableView.pin(to: view)
-        countryListTableView.register(CountryCell.self, forCellReuseIdentifier:  Contsants.countryListCellID)
+        countryListTableView.register(CountryCell.self, forCellReuseIdentifier:  Constants.countryListCellID)
         
         
     }
@@ -108,7 +121,7 @@ class ViewController: UIViewController {
 }
 
 
-extension ViewController : UITableViewDelegate , UITableViewDataSource {
+extension CountryListVC : UITableViewDelegate , UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return generalArray.count
@@ -123,11 +136,17 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
+        let sView = UIView()
+        
         label.text = generalArray[section][0].country[generalArray[section][0].country.startIndex].uppercased()
-        label.backgroundColor = UIColor.init(hex: Contsants.darkblue)
+        
+        label.frame = CGRect(x: 10, y: 13, width: 40, height: 20)
+        label.backgroundColor = UIColor.init(hex: Constants.darkblue)
         label.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
         label.textAlignment = .left
-        return label
+        sView.backgroundColor = UIColor.init(hex: Constants.darkblue)
+        sView.addSubview(label)
+        return sView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -137,7 +156,7 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = countryListTableView.dequeueReusableCell(withIdentifier:  Contsants.countryListCellID) as! CountryCell
+        let cell = countryListTableView.dequeueReusableCell(withIdentifier:  Constants.countryListCellID) as! CountryCell
         let stats = generalArray[indexPath.section][indexPath.row]
         
         cell.setCountryName(covidstats: stats)
