@@ -21,14 +21,40 @@ class ViewController: UIViewController {
         DataService.sharedClient.getAllCountryData { [weak self] (data) in
             guard let data = data else { return }
             self?.covidList = data.covid19Stats
-            self?.covidList.sort(by: {$0.confirmed < $1.confirmed})
+            self?.covidList.sort(by: {$0.country < $1.country})
             self?.generate2Darray()
+            //generalArray.sort(by: {$0[0].country < $1[0].country})
             DispatchQueue.main.async {
                 self?.countryListTableView.reloadData()
             }
             
         }
         
+    }
+    
+    func removeAllDuplicates(stats : [CovidStats])-> [CovidStats]{
+        var copyofstats = stats
+        var addedDict : [CovidStats:Bool] = [:]
+        var finalarray = [CovidStats]()
+        while !copyofstats.isEmpty{
+            let caseToFind = copyofstats[0]
+            
+            if addedDict[caseToFind] != true{
+                addedDict[caseToFind] = true
+            }else{
+                copyofstats.removeAll { (stats) -> Bool in
+                    return stats.country == caseToFind.country
+                }
+            }
+            
+            
+        }
+        
+        for (key,_) in addedDict{
+            finalarray.append(key)
+        }
+        
+        return finalarray
     }
     func generate2Darray(){
         var covidListCopy = covidList
@@ -43,7 +69,8 @@ class ViewController: UIViewController {
                     return closureLetter == letter
                 })
                 //filter array here
-                generalArray.append(singleCovidarray)
+                let finalsingle = removeAllDuplicates(stats: singleCovidarray)
+                generalArray.append(finalsingle)
                 
                 covidListCopy.removeAll { (stats) -> Bool in
                     let removed = stats.country
@@ -90,13 +117,19 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return generalArray[section][0].country[generalArray[section][0].country.startIndex].uppercased()
+    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.text = generalArray[section][0].country[generalArray[section][0].country.startIndex].uppercased()
-        label.backgroundColor = .gray
+        label.backgroundColor = UIColor.init(hex: Contsants.darkblue)
+        label.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
+        label.textAlignment = .left
         return label
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         

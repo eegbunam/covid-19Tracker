@@ -17,6 +17,8 @@ class CountryCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = .black
+        CountryName.textColor = .white
         
         addSubview(CountryImage)
         addSubview(CountryName)
@@ -24,7 +26,7 @@ class CountryCell: UITableViewCell {
         configureImageView()
         configurelabel()
         setImageContraints()
-       setLabelContraints()
+        setLabelContraints()
         
     
         
@@ -65,7 +67,7 @@ class CountryCell: UITableViewCell {
         let height :CGFloat = 80
         print(globalheight)
         let size = CGSize(width: 90, height: 90)
-        let point = CGPoint(x: 12, y: 5)
+        let point = CGPoint(x: 25, y: 5)
         CountryImage.frame = CGRect(origin: point, size: size)
         CountryImage.clipsToBounds = true
         CountryImage.layer.cornerRadius = 1/2
@@ -79,14 +81,19 @@ class CountryCell: UITableViewCell {
     
      private func configurelabel(){
         let globalwidth = contentView.frame.width
-        let size = CGSize(width: globalwidth/2.5, height: 80)
+        let size = CGSize(width: 110, height: 50)
         let point = CGPoint(x: 70 + globalwidth/2.5, y: 10)
         CountryName.frame = CGRect(origin: point, size: size)
         CountryName.clipsToBounds = true
         CountryName.numberOfLines = 0
         CountryName.adjustsFontSizeToFitWidth = true
+        CountryName.backgroundColor = UIColor.init(hex: Contsants.darkblue)
+        CountryName.layer.cornerRadius = 10
+        CountryName.textAlignment = .center
+        CountryName.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
         
     }
+    
     
      private func setImageContraints(){
         CountryImage.translatesAutoresizingMaskIntoConstraints = true
@@ -95,7 +102,7 @@ class CountryCell: UITableViewCell {
         CountryImage.heightAnchor.constraint(equalToConstant: 80).isActive = true
         CountryImage.widthAnchor.constraint(equalTo: CountryImage.heightAnchor, multiplier: 16/9).isActive = true
     }
-    
+
     private func setLabelContraints(){
         CountryName.translatesAutoresizingMaskIntoConstraints = true
        CountryName.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true

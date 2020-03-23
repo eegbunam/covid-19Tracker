@@ -73,7 +73,7 @@ struct CovidInfo : Codable {
 }
 
 
-struct CovidStats : Codable {
+struct CovidStats : Codable , Hashable {
     var province : String
     var country : String
     var lastUpdate : String
@@ -81,4 +81,8 @@ struct CovidStats : Codable {
     var deaths : Int
     var recovered : Int
     
+}
+
+func ==(lhs : CovidStats , rhs : CovidStats) -> Bool{
+    return lhs.country == rhs.country
 }

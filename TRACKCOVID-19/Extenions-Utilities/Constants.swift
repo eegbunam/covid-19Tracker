@@ -10,7 +10,10 @@ import Foundation
 
 struct Contsants{
     static let countryListCellID   = "countryList"
-    
+    static let lightblue = "#62C4C3"
+    static let red = "#D36767"
+    static let darkred = "#AA494A"
+    static let darkblue = "#3A4249"
     struct DataServiceConstants {
         
         

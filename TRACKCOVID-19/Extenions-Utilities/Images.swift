@@ -9,7 +9,3 @@
 import Foundation
 
 
-struct Images {
-    
-    
-}

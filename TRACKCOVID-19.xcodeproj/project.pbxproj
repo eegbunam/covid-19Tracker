@@ -22,6 +22,7 @@
 		43E37F8724276EE9001F3505 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43E37F8524276EE9001F3505 /* Main.storyboard */; };
 		43E37F8924276EED001F3505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43E37F8824276EED001F3505 /* Assets.xcassets */; };
 		43E37F8C24276EED001F3505 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43E37F8A24276EED001F3505 /* LaunchScreen.storyboard */; };
+		43FDBB89242954DE00DE363D /* segmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FDBB88242954DE00DE363D /* segmentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		43E37F8824276EED001F3505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E37F8B24276EED001F3505 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43E37F8D24276EED001F3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43FDBB88242954DE00DE363D /* segmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = segmentView.swift; sourceTree = "<group>"; };
 		668A0CB2E737BFFD3B8F2C2B /* Pods_TRACKCOVID_19.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TRACKCOVID_19.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C19A9C5F63531F08DB9738 /* Pods-TRACKCOVID-19.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRACKCOVID-19.debug.xcconfig"; path = "Target Support Files/Pods-TRACKCOVID-19/Pods-TRACKCOVID-19.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +75,7 @@
 			children = (
 				43E37F8324276EE9001F3505 /* ViewController.swift */,
 				4386AEC024284F2F00225F66 /* CountryCell.swift */,
+				43FDBB88242954DE00DE363D /* segmentView.swift */,
 			);
 			path = Country;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			files = (
 				4386AEC124284F2F00225F66 /* CountryCell.swift in Sources */,
 				4386AEB8242846AE00225F66 /* Images.swift in Sources */,
+				43FDBB89242954DE00DE363D /* segmentView.swift in Sources */,
 				43E37F8424276EE9001F3505 /* ViewController.swift in Sources */,
 				4386AECA24289F1200225F66 /* IsoCountryInfo.swift in Sources */,
 				43E37F8024276EE9001F3505 /* AppDelegate.swift in Sources */,
