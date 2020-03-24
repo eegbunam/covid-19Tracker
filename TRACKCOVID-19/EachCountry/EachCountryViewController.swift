@@ -8,9 +8,15 @@
 
 import UIKit
 
+
+
 class EachCountryViewController: UIViewController {
+    
+    
 
     override func viewDidLoad() {
+        let vc = CountryListVC()
+        vc.delegate = self
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
@@ -28,3 +34,13 @@ class EachCountryViewController: UIViewController {
     */
 
 }
+
+extension EachCountryViewController : CountryListVCDelegate{
+    
+    func didclickCountry(stats: response) {
+        print("in delegate")
+    }
+    
+    
+}
+

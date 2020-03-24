@@ -9,7 +9,8 @@
 import UIKit
 
 protocol CountryListVCDelegate {
-    func didclickCountry(stats : [CovidStats])
+    func didclickCountry(stats : response
+    )
 }
 
 class CountryListVC: UIViewController {
@@ -41,21 +42,7 @@ class CountryListVC: UIViewController {
                 self?.countryListTableView.reloadData()
             }
         }
-        
-        //        DataService.sharedClient.getAllCountryData { [weak self] (data) in
-        //            guard let data = data else { return }
-        //
-        ////            self?.covidList = data.covid19Stats
-        ////            self?.covidList.sort(by: {$0.country < $1.country})
-        ////            self?.generate2Darray()
-        ////            unTouchchedGeneralArray = generalArray
-        //            //generalArray.sort(by: {$0[0].country < $1[0].country})
-        //            DispatchQueue.main.async {
-        //                self?.countryListTableView.reloadData()
-        //            }
-        //
-        //        }
-        
+       
     }
     
     func setupnavigationBar(){
@@ -66,7 +53,7 @@ class CountryListVC: UIViewController {
         let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.init(hex: Constants.darkblue) , .font: font , .strokeColor:  UIColor.white]
         //navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.tintColor = UIColor.init(hex: Constants.lightblue)
     }
     
     func removeAllDuplicates(stats : [CovidStats])-> [CovidStats]{
@@ -168,8 +155,17 @@ class CountryListVC: UIViewController {
         
     }
     
-    func nextvc(){
+    func nextvc(indexpath : IndexPath){
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "eachCountryVc") as! EachCountryViewController
+         self.delegate = vc
+        let name = genArr[indexpath.section][indexpath.row]
+          let stats = genArr[indexpath.section][indexpath.row]
+
+          delegate?.didclickCountry(stats: stats)
+       
+        
+
+        
         
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -214,22 +210,20 @@ extension CountryListVC : UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let imageView = UIImageView(image: UIImage(named: "right.png"))
         let cell = countryListTableView.dequeueReusableCell(withIdentifier:  Constants.countryListCellID) as! CountryCell
         let stats = genArr[indexPath.section][indexPath.row]
         
         cell.setCountryName(covidstats: stats)
         cell.setcountryImage(covidstats: stats)
+        cell.selectionStyle = .none
+        cell.accessoryView = imageView
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let name = genArr[indexPath.section][indexPath.row]
-//        print(name)
-//        let stats = unTouchchedGeneralArray[indexPath.section]
-//        for m in stats{
-//            print(m.country)
-//        }
-//        delegate?.didclickCountry(stats: stats)
-        nextvc()
+ 
+        nextvc(indexpath: indexPath)
     }
     
     

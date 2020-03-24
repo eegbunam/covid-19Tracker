@@ -88,7 +88,6 @@ class DataService : Decodable {
                     let decoder = JSONDecoder()
                     let information = try decoder.decode(Covid.self ,from: jsonData)
                     let finalinfo = information
-                    print(finalinfo.results)
                     completion(finalinfo)
                     
                 }catch{
