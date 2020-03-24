@@ -102,6 +102,51 @@ class DataService : Decodable {
     }
     
     
+    
+    func testEndPointCountry(Country : String , completion :@escaping ( _ data : Covid?) -> ()){
+        let headers = [
+            "x-rapidapi-host": "covid-193.p.rapidapi.com",
+            "x-rapidapi-key": "c37fe56226msh3c4e1336ca870e8p16b031jsn1b62f6c5dd52"
+        ]
+        
+        let request = NSMutableURLRequest(url: NSURL(string: "https://covid-193.p.rapidapi.com/statistics")! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                print(error!)
+            } else {
+                let httpResponse = response as? HTTPURLResponse
+                print(httpResponse!)
+                
+                guard let jsonData = data else{
+                    print("json data was nil")
+                    //completion(nil)
+                    return
+                }
+                
+
+                do{
+                    let decoder = JSONDecoder()
+                    let information = try decoder.decode(Covid.self ,from: jsonData)
+                    let finalinfo = information
+                    completion(finalinfo)
+                    
+                }catch{
+                    print("couldnt decode data")
+                    completion(nil)
+                }
+                
+            }
+        })
+        
+        dataTask.resume()
+    }
+    
 }
 
 
@@ -113,6 +158,7 @@ struct Covid : Codable{
 }
 
 struct response : Codable {
+    
     var country : String
     var cases : cases
     var deaths : deaths
