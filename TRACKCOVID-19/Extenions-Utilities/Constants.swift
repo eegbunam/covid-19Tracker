@@ -9,6 +9,7 @@
 import Foundation
 
 var generalArray = [[CovidStats]]()
+var genArr =  [[response]]()
 var unTouchchedGeneralArray = [[CovidStats]]()
 struct Constants{
     static let countryListCellID   = "countryList"

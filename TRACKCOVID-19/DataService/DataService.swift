@@ -57,7 +57,7 @@ class DataService : Decodable {
     }
     
     
-    func testEndPoint(){
+    func testEndPoint(completion :@escaping ( _ data : Covid?) -> ()){
         let headers = [
             "x-rapidapi-host": "covid-193.p.rapidapi.com",
             "x-rapidapi-key": "c37fe56226msh3c4e1336ca870e8p16b031jsn1b62f6c5dd52"
@@ -83,19 +83,17 @@ class DataService : Decodable {
                     return
                 }
                 
-//                let json = try? JSONSerialization.jsonObject(with: jsonData, options: [])
-//                print(json as! [String:Any])
-//
+
                 do{
                     let decoder = JSONDecoder()
                     let information = try decoder.decode(Covid.self ,from: jsonData)
                     let finalinfo = information
                     print(finalinfo.results)
-                   // completion(finalinfo)
+                    completion(finalinfo)
                     
                 }catch{
                     print("couldnt decode data")
-                    //completion(nil)
+                    completion(nil)
                 }
                 
             }

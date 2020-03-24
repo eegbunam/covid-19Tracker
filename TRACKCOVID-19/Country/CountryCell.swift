@@ -19,7 +19,7 @@ class CountryCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .black
+        //self.backgroundColor = .black
         CountryName.textColor = .black
         
         addSubview(CountryImage)
@@ -37,22 +37,19 @@ class CountryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCountryName(covidstats : CovidStats){
+    func setCountryName(covidstats : response){
         CountryName.text = covidstats.country
     }
     
-    func setcountryImage(covidstats : CovidStats){
+    func setcountryImage(covidstats : response){
         var name = covidstats.country
-        if name == "US"{
+        if name == "USA"{
             name = "United States"
         }
         
-        if name == "The Gambia"{
-            name = "Gambia"
-        }
+      
         if let iso = IsoCountryCodes.searchByName(name){
             let imagename = iso.alpha2.lowercased() + ".png"
-            print(imagename)
             let image = UIImage(named: imagename)
             CountryImage.image = image
         }else{
@@ -88,7 +85,7 @@ class CountryCell: UITableViewCell {
         CountryName.clipsToBounds = true
         CountryName.numberOfLines = 0
         CountryName.adjustsFontSizeToFitWidth = true
-        CountryName.backgroundColor = UIColor.init(hex: Constants.darkblue)
+        CountryName.backgroundColor = UIColor.init(hex: Constants.lightblue)
         CountryName.layer.cornerRadius = 10
         CountryName.textAlignment = .center
         CountryName.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
