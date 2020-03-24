@@ -8,6 +8,8 @@
 
 import Foundation
 
+var generalArray = [[CovidStats]]()
+var unTouchchedGeneralArray = [[CovidStats]]()
 struct Constants{
     static let countryListCellID   = "countryList"
     static let lightblue = "#62C4C3"
@@ -20,11 +22,11 @@ struct Constants{
         
         
         struct Covid19Services {
-            static let headers = [
-                "x-rapidapi-host": "covid-19-coronavirus-statistics.p.rapidapi.com",
+            static let headers =  [
+                "x-rapidapi-host": "covid19-tracker.p.rapidapi.com",
                 "x-rapidapi-key": "c37fe56226msh3c4e1336ca870e8p16b031jsn1b62f6c5dd52"
             ]
-            static let generalURL = NSURL(string: "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats")! as URL
+            static let generalURL = NSURL(string: "https://covid19-tracker.p.rapidapi.com/statistics")! as URL
             static let countryURL = ""
             static let apiKey = ""
         }

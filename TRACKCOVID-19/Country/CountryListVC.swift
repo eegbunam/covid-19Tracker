@@ -8,29 +8,39 @@
 
 import UIKit
 
+protocol CountryListVCDelegate {
+    func didclickCountry(stats : [CovidStats])
+}
+
 class CountryListVC: UIViewController {
     
     var countryListTableView = UITableView()
     var covidList = [CovidStats]()
-    var generalArray = [[CovidStats]]()
-    
+    var delegate : CountryListVCDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Pick a Country"
+        view.backgroundColor = .black
         setupnavigationBar()
         
         configureTableView()
-        DataService.sharedClient.getAllCountryData { [weak self] (data) in
-            guard let data = data else { return }
-            self?.covidList = data.covid19Stats
-            self?.covidList.sort(by: {$0.country < $1.country})
-            self?.generate2Darray()
-            //generalArray.sort(by: {$0[0].country < $1[0].country})
-            DispatchQueue.main.async {
-                self?.countryListTableView.reloadData()
-            }
-            
-        }
+      
+        
+        DataService.sharedClient.testEndPoint()
+        
+//        DataService.sharedClient.getAllCountryData { [weak self] (data) in
+//            guard let data = data else { return }
+//
+////            self?.covidList = data.covid19Stats
+////            self?.covidList.sort(by: {$0.country < $1.country})
+////            self?.generate2Darray()
+////            unTouchchedGeneralArray = generalArray
+//            //generalArray.sort(by: {$0[0].country < $1[0].country})
+//            DispatchQueue.main.async {
+//                self?.countryListTableView.reloadData()
+//            }
+//
+//        }
         
     }
     
@@ -40,8 +50,8 @@ class CountryListVC: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         //navigationController?.navigationBar.barTintColor = UIColor.black
         let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white , .font: font , .strokeColor:  UIColor.white]
-        navigationController?.navigationBar.barStyle = UIBarStyle.black
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.init(hex: Constants.darkblue) , .font: font , .strokeColor:  UIColor.white]
+        navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = UIColor.white
     }
     
@@ -116,6 +126,12 @@ class CountryListVC: UIViewController {
         
     }
     
+    func nextvc(){
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "eachCountryVc") as! EachCountryViewController
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     
 }
@@ -166,7 +182,12 @@ extension CountryListVC : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let name = generalArray[indexPath.section][indexPath.row]
         print(name)
-        
+        let stats = unTouchchedGeneralArray[indexPath.section]
+        for m in stats{
+            print(m.country)
+        }
+        delegate?.didclickCountry(stats: stats)
+        nextvc()
     }
     
     
