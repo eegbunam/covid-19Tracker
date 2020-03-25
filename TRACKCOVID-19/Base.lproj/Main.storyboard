@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="45" translatesAutoresizingMaskIntoConstraints="NO" id="PER-Ou-6IJ">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="PER-Ou-6IJ">
                                 <rect key="frame" x="32" y="82" width="311" height="547"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lho-9B-R8S">
@@ -141,21 +141,18 @@
                                             <constraint firstAttribute="trailing" secondItem="PQC-YI-jsA" secondAttribute="trailing" constant="-0.5" id="ujH-3g-5ct"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kxq-ro-wvt">
-                                        <rect key="frame" x="0.0" y="345" width="311" height="113"/>
-                                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C5Z-rU-pbL">
-                                        <rect key="frame" x="0.0" y="503" width="311" height="44"/>
+                                        <rect key="frame" x="0.0" y="320" width="311" height="40"/>
                                         <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="s01-Bs-HE1"/>
+                                            <constraint firstAttribute="height" constant="40" id="ELJ-yi-3TF"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kxq-ro-wvt">
+                                        <rect key="frame" x="0.0" y="380" width="311" height="167"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </view>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Kxq-ro-wvt" firstAttribute="top" secondItem="PER-Ou-6IJ" secondAttribute="top" constant="345" id="W1d-lW-3Z0"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -171,6 +168,7 @@
                     <connections>
                         <outlet property="activeCasesLabel" destination="qzb-8z-zbz" id="NhU-cO-i6T"/>
                         <outlet property="activeImage" destination="feq-nm-igs" id="WzL-PH-GYh"/>
+                        <outlet property="bStack" destination="PER-Ou-6IJ" id="xgm-Qm-KFr"/>
                         <outlet property="bottomView" destination="Kxq-ro-wvt" id="i3x-r8-gVv"/>
                         <outlet property="countryFlagImage" destination="my8-0c-JKI" id="R3C-hf-jMF"/>
                         <outlet property="deathsImage" destination="6jv-tN-oXL" id="6jR-se-qwL"/>
@@ -185,7 +183,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1047.2" y="76.911544227886068"/>
+            <point key="canvasLocation" x="1046.376811594203" y="76.339285714285708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Wlr-VR-BgS">
