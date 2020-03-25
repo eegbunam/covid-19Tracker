@@ -7,5 +7,6 @@ target 'TRACKCOVID-19' do
 
   # Pods for TRACKCOVID-19
     pod 'AWSAppSync', '~> 3.1.0'
+    pod 'BetterSegmentedControl', '~> 1.3'
 
 end

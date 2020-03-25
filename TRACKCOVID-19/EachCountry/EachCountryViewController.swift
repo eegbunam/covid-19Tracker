@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import BetterSegmentedControl
 
 
 class EachCountryViewController: UIViewController {
@@ -21,7 +21,7 @@ class EachCountryViewController: UIViewController {
     
     @IBOutlet weak var deathsLabel: UILabel!
     var countryInformation : response?
-
+    
     
     @IBOutlet weak var totalCasesLabel: UILabel!
     
@@ -40,28 +40,37 @@ class EachCountryViewController: UIViewController {
     
     @IBOutlet weak var topView: UIView!
     
+    @IBOutlet weak var bottomView: UIView!
+    
+    
+    @IBOutlet weak var segmentedView: UIView!
+    
     
     let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
+    
+    
+    var lastUpdateTableView = UITableView()
+    var ProvinceTableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = countryInformation?.country
         setupView()
         
-       
+        
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension EachCountryViewController : CountryListVCDelegate{
@@ -77,16 +86,33 @@ extension EachCountryViewController : CountryListVCDelegate{
 extension EachCountryViewController {
     
     func setupView(){
-        let color = UIColor.init(hex: Constants.errieBlack)?.withAlphaComponent(0.8)
-        view.backgroundColor = color
-            
-            //UIColor.init(hex: Constants.lightblue)?.withAlphaComponent(0.8)
+        segmentedView.isHidden = true
+        //UIColor.init(hex: Constants.lightblue)?.withAlphaComponent(0.8)
         setupdeathView()
         setuprecoveryView()
         setupActiveView()
         setupCountryImage()
         setuptottalView()
         setupTopView()
+        setupBottomView()
+        setupLastUpdateTableView()
+        //setupsegmantedControl()
+        
+        
+        
+        DataService.sharedClient.testEndPointCountry(Country: countryInformation?.country ?? "") { (_) in
+            
+        }
+    }
+    
+    func setupLastUpdateTableView(){
+        bottomView.addSubview(lastUpdateTableView)
+        lastUpdateTableView.delegate = self
+        lastUpdateTableView.dataSource = self
+        lastUpdateTableView.rowHeight = 40
+        lastUpdateTableView.pin(to: bottomView)
+        //lastUpdateTableView.register(CountryCell.self, forCellReuseIdentifier:  Constants.countryListCellID)
+        
     }
     
     func setupdeathView(){
@@ -98,6 +124,7 @@ extension EachCountryViewController {
         deathsImage.contentMode = .scaleAspectFit
         deathsLabel.text = "Death: \(deathToll)"
         deathsLabel.font = font
+         deathsLabel.adjustsFontSizeToFitWidth = true
         
     }
     
@@ -109,6 +136,7 @@ extension EachCountryViewController {
         recoveredImage.contentMode = .scaleAspectFit
         recoveredLabel.font = font
         recoveredLabel.text = "Recovered: \(recovery ?? 0)"
+        recoveredLabel.adjustsFontSizeToFitWidth = true
         
     }
     
@@ -122,15 +150,16 @@ extension EachCountryViewController {
         activeCasesLabel.adjustsFontSizeToFitWidth = true
         
         activeCasesLabel.textAlignment = .left
-        activeCasesLabel.numberOfLines = 0
+        activeCasesLabel.numberOfLines = 2
         activeCasesLabel.clipsToBounds = true
     }
     
     func setupCountryImage(){
         
         let cName = countryInformation?.country
-        
-        countryFlagImage.image = UIImage(named: setcountryImage(name: (cName ?? "")))
+        let picname = setcountryImage(name: (cName ?? ""))
+        print(picname)
+        countryFlagImage.image = UIImage(named: picname)
         countryFlagImage.layer.cornerRadius = 10
     }
     
@@ -144,11 +173,36 @@ extension EachCountryViewController {
         
     }
     
+    func setupsegmantedControl() -> BetterSegmentedControl{
+        let control = BetterSegmentedControl(
+            frame: segmentedView.frame,
+        segments: LabelSegment.segments(withTitles: ["One", "Two"],
+        normalFont:font,
+        normalTextColor: .lightGray,
+        selectedFont:font,
+        selectedTextColor: .white),
+        index: 0,
+        options: [.backgroundColor(.white),
+                  .indicatorViewBackgroundColor(UIColor.init(hex: Constants.lightblue) ?? UIColor.lightGray),
+        .cornerRadius(12.0)
+            ,
+        .animationSpringDamping(0.7),
+        .panningDisabled(true)
+        ])
+        return control
+        
+    }
+    
     
     func setupTopView(){
-        topView.backgroundColor = UIColor.init(hex: Constants.lightblue)?.withAlphaComponent(0.8)
+        //topView.backgroundColor = UIColor.init(hex: Constants.lightblue)?.withAlphaComponent(0.8)
         topView.clipsToBounds = true
         topView.layer.cornerRadius = 10
+    }
+    
+    func setupBottomView(){
+        bottomView.backgroundColor = .white
+        
     }
     func setcountryImage(name : String)-> String{
         var newname = name
@@ -158,9 +212,28 @@ extension EachCountryViewController {
         if let iso = IsoCountryCodes.searchByName(newname){
             let imagename = iso.alpha2.lowercased() + ".png"
             return imagename
-           
+            
         }else{
             return ""
         }
     }
+}
+
+
+extension EachCountryViewController : UITableViewDelegate , UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+       
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return setupsegmantedControl()
+    }
+    
+    
 }

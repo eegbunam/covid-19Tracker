@@ -74,11 +74,11 @@ class DataService : Decodable {
             if (error != nil) {
                 print(error!)
             } else {
-                let httpResponse = response as? HTTPURLResponse
-                print(httpResponse!)
+                //let httpResponse = response as? HTTPURLResponse
+                //print(httpResponse!)
                 
                 guard let jsonData = data else{
-                    print("json data was nil")
+                    //print("json data was nil")
                     //completion(nil)
                     return
                 }
@@ -104,46 +104,42 @@ class DataService : Decodable {
     
     
     func testEndPointCountry(Country : String , completion :@escaping ( _ data : Covid?) -> ()){
+        
+        if Country == ""{
+            print("no country informationn given")
+            return
+        }
+        
+        
         let headers = [
-            "x-rapidapi-host": "covid-193.p.rapidapi.com",
+            "x-rapidapi-host": "coronavirus-monitor-v2.p.rapidapi.com",
             "x-rapidapi-key": "c37fe56226msh3c4e1336ca870e8p16b031jsn1b62f6c5dd52"
         ]
-        
-        let request = NSMutableURLRequest(url: NSURL(string: "https://covid-193.p.rapidapi.com/statistics")! as URL,
-                                          cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: 10.0)
+
+        let request = NSMutableURLRequest(url: NSURL(string: "https://coronavirus-monitor-v2.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=" + Country)! as URL,
+                                                cachePolicy: .useProtocolCachePolicy,
+                                            timeoutInterval: 10.0)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
-        
+
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if (error != nil) {
-                print(error!)
+                print(error)
             } else {
                 let httpResponse = response as? HTTPURLResponse
-                print(httpResponse!)
+                //print(httpResponse)
                 
                 guard let jsonData = data else{
-                    print("json data was nil")
-                    //completion(nil)
-                    return
-                }
-                
-
-                do{
-                    let decoder = JSONDecoder()
-                    let information = try decoder.decode(Covid.self ,from: jsonData)
-                    let finalinfo = information
-                    completion(finalinfo)
-                    
-                }catch{
-                    print("couldnt decode data")
-                    completion(nil)
-                }
-                
+                                   //print("json data was nil")
+                                   //completion(nil)
+                                   return
+                               }
+                let json = try? JSONSerialization.jsonObject(with: jsonData, options: [])
+                print(json as! [String:Any])
             }
         })
-        
+
         dataTask.resume()
     }
     
