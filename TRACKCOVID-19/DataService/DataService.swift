@@ -83,7 +83,7 @@ class DataService : Decodable {
                     return
                 }
                 
-
+                
                 do{
                     let decoder = JSONDecoder()
                     let information = try decoder.decode(Covid.self ,from: jsonData)
@@ -103,7 +103,7 @@ class DataService : Decodable {
     
     
     
-    func testEndPointCountry(Country : String , completion :@escaping ( _ data : Covid?) -> ()){
+    func testEndPointCountry(Country : String , completion :@escaping ( _ data : casesbydate?) -> ()){
         
         if Country == ""{
             print("no country informationn given")
@@ -115,13 +115,13 @@ class DataService : Decodable {
             "x-rapidapi-host": "coronavirus-monitor-v2.p.rapidapi.com",
             "x-rapidapi-key": "c37fe56226msh3c4e1336ca870e8p16b031jsn1b62f6c5dd52"
         ]
-
+        
         let request = NSMutableURLRequest(url: NSURL(string: "https://coronavirus-monitor-v2.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=" + Country)! as URL,
-                                                cachePolicy: .useProtocolCachePolicy,
-                                            timeoutInterval: 10.0)
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
-
+        
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if (error != nil) {
@@ -131,21 +131,64 @@ class DataService : Decodable {
                 //print(httpResponse)
                 
                 guard let jsonData = data else{
-                                   //print("json data was nil")
-                                   //completion(nil)
-                                   return
-                               }
+                    //print("json data was nil")
+                    //completion(nil)
+                    return
+                }
                 let json = try? JSONSerialization.jsonObject(with: jsonData, options: [])
                 print(json as! [String:Any])
+                
+                
+                do{
+                    let decoder = JSONDecoder()
+                    let information = try decoder.decode(casesbydate.self ,from: jsonData)
+                     
+                    let finalinfo = information
+                    completion(finalinfo)
+                    
+                    
+                }
+                catch{
+                    print("couldnt decode data from case by date")
+                    completion(nil)
+                }
+                
+                
             }
         })
-
+        
         dataTask.resume()
     }
     
 }
 
+struct casesbydate : Codable{
+    var country :String
+    var stat_by_country : [stat_by_country]
+}
 
+struct stat_by_country : Codable{
+   var active_cases :String?
+    var country_name :String?
+    var id :String
+    var new_cases :String?
+    var new_deaths : String?
+   var record_date :String?
+  var region :String?
+    var serious_critical :String?
+    var total_cases :String?
+   var total_cases_per1 : String?
+   var total_deaths : String
+    var total_recovered : String
+    
+    
+    
+    func removeDuplicateDates(data : [stat_by_country]) -> [stat_by_country]{
+        
+        return data
+    }
+    
+}
 struct Covid : Codable{
     var get : String
     var results : Int
