@@ -51,17 +51,17 @@ class EachCountryViewController: UIViewController {
     var originalPopUpY : CGFloat?
     
     let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
-    
+    let darkBlue = UIColor(hex: Constants.darkblue)
     
     var lastUpdateTableView = UITableView()
     var ProvinceTableView = UITableView()
     
     var firstList = ["hey","how","hey"]
     var secondList = ["bye","boy","babe", "bbaba"]
-    
+    var index : Int = 0
     var dataList : [stat_by_country] = []
-    
-   lazy var  tableViewList = dataList
+    var stateList : [CovidStats] = []
+    lazy var  tableViewList : Any = dataList
     
     override func viewDidLoad() {
         
@@ -78,6 +78,17 @@ class EachCountryViewController: UIViewController {
                 print("data is nil")
             }
             
+        }
+        
+        DataService.sharedClient.getStateData(country: countryInformation?.country ?? "") {[weak self] (covid) in
+            if let covid = covid{
+                
+                if covid.message == "OK"{
+                    let data = covid.data.covid19Stats
+                    self?.stateList = data
+                }
+               
+            }
         }
         super.viewDidLoad()
         title = countryInformation?.country
@@ -112,7 +123,7 @@ extension EachCountryViewController : CountryListVCDelegate{
 extension EachCountryViewController {
     
     func setupView(){
-         //segmentedView.isHidden = true
+        //segmentedView.isHidden = true
         //segmentedView.addSubview(setupsegmantedControl())
         bStack.addSubview(setupsegmantedControl())
         segmentedView.backgroundColor = .white
@@ -139,7 +150,7 @@ extension EachCountryViewController {
         
     }
     
-   
+    
     func setupdeathView(){
         guard let countryInformation = countryInformation else {return}
         
@@ -150,6 +161,7 @@ extension EachCountryViewController {
         deathsLabel.text = "Death: \(deathToll)"
         deathsLabel.font = font
         deathsLabel.adjustsFontSizeToFitWidth = true
+         deathsLabel.textColor = darkBlue
         
     }
     
@@ -161,14 +173,43 @@ extension EachCountryViewController {
         originalPopUpY = y
         popView.frame = CGRect(x: x, y: y, width: width, height: height)
         popView.layer.cornerRadius = 10
-        popView.backgroundColor = .black
+        popView.backgroundColor = darkBlue
+        popView.layer.cornerRadius = 10
         view.addSubview(popView)
-
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        button.backgroundColor = .white
+        
+        let button = UIButton(frame: CGRect(x: popView.frame.width - 30, y: 0, width: 30, height: 30))
+        button.backgroundColor = .clear
         button.addTarget(self, action: #selector(handlepopcancelButton), for: .touchUpInside)
         button.setImage(UIImage(named: "cancel.png"), for: .normal)
         popView.addSubview(button)
+        
+        let activeLabel = UILabel()
+        activeLabel.frame = CGRect(x: 20, y: 40, width: width - 35, height: 50)
+        activeLabel.backgroundColor = .white
+        activeLabel.font = font
+        activeLabel.text  = "This is the activeLabel"
+        //activeLabel.layer.cornerRadius = 20
+        popView.addSubview(activeLabel)
+            
+        
+        let deathLabel = UILabel()
+        deathLabel.frame = CGRect(x: 20, y: 105, width: width - 35 , height: 50)
+        deathLabel.backgroundColor = .white
+        deathLabel.font = font
+        deathLabel.text = "The is the deathLabel"
+        deathLabel.layer.cornerRadius = 10
+        popView.addSubview(deathLabel)
+        
+        let recoveredLabel = UILabel()
+        recoveredLabel.frame = CGRect(x: 20, y: 170, width: width - 35 , height: 50)
+        recoveredLabel.backgroundColor = .white
+        recoveredLabel.font = font
+        recoveredLabel.text = "The is recovered Label"
+        recoveredLabel.layer.cornerRadius = 10
+        popView.addSubview(recoveredLabel)
+        
+        
+        
         
     }
     
@@ -185,7 +226,7 @@ extension EachCountryViewController {
     func removepopUp(){
         UIView.animate(withDuration: 0.5, delay: 0.2, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
             if let y = self.originalPopUpY{
-                 self.popView.frame.origin.y = y
+                self.popView.frame.origin.y = y
             }
         }, completion: nil)
         
@@ -200,6 +241,7 @@ extension EachCountryViewController {
         recoveredLabel.font = font
         recoveredLabel.text = "Recovered: \(recovery ?? 0)"
         recoveredLabel.adjustsFontSizeToFitWidth = true
+         recoveredLabel.textColor = darkBlue
         
     }
     
@@ -215,6 +257,7 @@ extension EachCountryViewController {
         activeCasesLabel.textAlignment = .left
         activeCasesLabel.numberOfLines = 2
         activeCasesLabel.clipsToBounds = true
+        activeCasesLabel.textColor = darkBlue
     }
     
     func setupCountryImage(){
@@ -233,6 +276,8 @@ extension EachCountryViewController {
         totalCasesLabel.text = "Total Infected: \(total ?? 0)"
         totalCasesLabel.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 20)
         totalCasesLabel.adjustsFontSizeToFitWidth = true
+        totalCasesLabel.textColor = darkBlue
+        
         
     }
     
@@ -240,10 +285,10 @@ extension EachCountryViewController {
         let width = segmentedView.frame.width - 10
         let x = (view.frame.width - width)/2
         let control = BetterSegmentedControl(
-            frame: segmentedView.frame,
-            segments: LabelSegment.segments(withTitles: ["One", "Two"],
+            frame: CGRect(x: segmentedView.frame.origin.x, y: segmentedView.frame.origin.y, width: segmentedView.frame.width , height: segmentedView.frame.height - 10),
+            segments: LabelSegment.segments(withTitles: ["Latest Update", "States"],
                                             normalFont:font,
-                                            normalTextColor: .lightGray,
+                                            normalTextColor: darkBlue,
                                             selectedFont:font,
                                             selectedTextColor: .white),
             index: 0,
@@ -254,7 +299,7 @@ extension EachCountryViewController {
                       .animationSpringDamping(0.7),
                       .panningDisabled(true)
         ])
-       
+        
         control.addTarget(self, action: #selector(segmentedControlFuntion(_:)), for: .valueChanged)
         return control
         
@@ -263,12 +308,13 @@ extension EachCountryViewController {
     
     @objc func segmentedControlFuntion(_ sender : BetterSegmentedControl){
         if sender.index == 0{
-           tableViewList = dataList
-            
+            tableViewList = dataList
+            index = 0
         }
         else{
+            index = 1
             print("index is 1")
-           tableViewList = dataList
+            tableViewList = stateList
             
         }
         lastUpdateTableView.reloadData()
@@ -306,14 +352,31 @@ extension EachCountryViewController {
 
 extension EachCountryViewController : UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if index == 0 {
+            return (tableViewList as! [stat_by_country]).count
+        }else{
+            return (tableViewList as! [CovidStats]).count
+        }
         
-        return tableViewList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        cell.textLabel?.text = tableViewList[indexPath.row].record_date
+        if index == 0{
+            let finalList = tableViewList as! [stat_by_country]
+            cell.textLabel?.text = finalList[indexPath.row].record_date
+        }else{
+            let finalList = tableViewList as! [CovidStats]
+            if finalList.count == 1{
+                cell.textLabel?.text = finalList[indexPath.row].country
+            }else{
+                cell.textLabel?.text = finalList[indexPath.row].province
+            }
+            
+        }
+        
+        
         return cell
         
     }
@@ -326,6 +389,25 @@ extension EachCountryViewController : UITableViewDelegate , UITableViewDataSourc
         return UILabel()
         
     }
-
-
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 25
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        
+        if index == 0 {
+            label.text = "Get updates Every 24Hours"
+            label.font = font
+        }else{
+            label.text = "Information for every State"
+            label.font = font
+        }
+        
+        return label
+    }
+    
+    
 }

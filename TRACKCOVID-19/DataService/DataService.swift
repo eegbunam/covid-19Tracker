@@ -14,48 +14,7 @@ class DataService : Decodable {
     
     static let sharedClient = DataService()
     
-    func getAllCountryData(completion :@escaping ( _ data : cList?) -> ()){
-        let headers = Constants.DataServiceConstants.Covid19Services.headers
-        let request = NSMutableURLRequest(url: Constants.DataServiceConstants.Covid19Services.generalURL ,
-                                          cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-            if (error != nil) {
-                print(error)
-                completion(nil)
-            } else {
-                let httpResponse = response as? HTTPURLResponse
-                print(httpResponse!)
-                guard let jsonData = data else{
-                    print("json data was nil")
-                    completion(nil)
-                    return
-                }
-                let json = try? JSONSerialization.jsonObject(with: jsonData, options: [])
-                print(json as! [String:Any])
-                do{
-                    let decoder = JSONDecoder()
-                    let information = try decoder.decode(cList.self ,from: jsonData)
-                    let finalinfo = information
-                    completion(finalinfo)
-                    
-                }catch{
-                    print("couldnt decode data")
-                    completion(nil)
-                }
-                
-                
-                
-                
-            }
-        })
-        
-        dataTask.resume()
-        
-    }
+    
     
     
     func testEndPoint(completion :@escaping ( _ data : Covid?) -> ()){
@@ -126,18 +85,13 @@ class DataService : Decodable {
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if (error != nil) {
-                print(error)
+                completion(nil)
+                return
             } else {
                 let httpResponse = response as? HTTPURLResponse
-                //print(httpResponse)
                 
-                guard let jsonData = data else{
-                    //print("json data was nil")
-                    //completion(nil)
-                    return
-                }
-                let json = try? JSONSerialization.jsonObject(with: jsonData, options: [])
-                print(json as! [String:Any])
+                
+                guard let jsonData = data else{return}
                 
                 
                 do{
@@ -151,6 +105,55 @@ class DataService : Decodable {
                 }
                 catch{
                     print("couldnt decode data from case by date")
+                    completion(nil)
+                }
+                
+                
+            }
+        })
+        
+        dataTask.resume()
+    }
+    
+    
+    func getStateData(country : String ,completion :@escaping ( _ data : AllAboutCovid?) -> ()){
+        let headers = [
+            "x-rapidapi-host": "covid-19-coronavirus-statistics.p.rapidapi.com",
+            "x-rapidapi-key": "c37fe56226msh3c4e1336ca870e8p16b031jsn1b62f6c5dd52"
+        ]
+        
+        let request = NSMutableURLRequest(url: NSURL(string: "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=" + country)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                completion(nil)
+                return
+                
+            } else {
+                let httpResponse = response as? HTTPURLResponse
+                
+                
+                guard let jsonData = data else{
+                    
+                    return
+                }
+                let json = try? JSONSerialization.jsonObject(with: jsonData, options: [])
+                print(json as! [String:Any])
+                
+                
+                do{
+                    let decoder = JSONDecoder()
+                    let information = try decoder.decode(AllAboutCovid.self ,from: jsonData)
+                    let finalinfo = information
+                    completion(finalinfo)
+                    
+                }catch{
+                    print("couldnt decode data")
                     completion(nil)
                 }
                 
@@ -184,7 +187,7 @@ struct stat_by_country : Codable{
     var date : Date?
     
     
-     func getdate() -> Date?{
+    func getdate() -> Date?{
         var finaldate : Date?
         if let string = self.record_date{
             let start = string.index(string.startIndex, offsetBy: 0)
@@ -210,13 +213,21 @@ struct stat_by_country : Codable{
         
     }
     static  func removeDuplicateDates(data : [stat_by_country]){
-         //let s = data[0].getdate()
+        //let s = data[0].getdate()
         
         
         
     }
     
 }
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//used to get info for first view controller
+
 struct Covid : Codable{
     var get : String
     var results : Int
@@ -246,6 +257,7 @@ struct deaths : Codable{
     var new : String?
     var total : Int
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -256,26 +268,9 @@ struct deaths : Codable{
 
 
 
-struct cList : Codable{
-    var location : [location]
-}
-
-struct location : Codable{
-    var country : String
-    var country_code : String
-    var latest : [latest]
-    var province : String
-    
-}
 
 
-struct latest : Codable{
-    var confirmed : Int
-    var deaths :Int
-    var recovered : Int
-    
-}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct AllAboutCovid : Codable{
     var error : Bool
     var statusCode : Int
@@ -285,7 +280,6 @@ struct AllAboutCovid : Codable{
 }
 
 struct CovidInfo : Codable {
-    var lastChecked : String
     var covid19Stats : [CovidStats]
     
 }
@@ -304,4 +298,5 @@ struct CovidStats : Codable , Hashable {
 func ==(lhs : CovidStats , rhs : CovidStats) -> Bool{
     return lhs.country == rhs.country
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
