@@ -8,6 +8,7 @@
 
 import Foundation
 import AWSAppSync
+import UIKit
 
 class DataService : Decodable {
     
@@ -142,7 +143,7 @@ class DataService : Decodable {
                 do{
                     let decoder = JSONDecoder()
                     let information = try decoder.decode(casesbydate.self ,from: jsonData)
-                     
+                    
                     let finalinfo = information
                     completion(finalinfo)
                     
@@ -168,24 +169,51 @@ struct casesbydate : Codable{
 }
 
 struct stat_by_country : Codable{
-   var active_cases :String?
+    var active_cases :String?
     var country_name :String?
     var id :String
     var new_cases :String?
     var new_deaths : String?
-   var record_date :String?
-  var region :String?
+    var record_date :String?
+    var region :String?
     var serious_critical :String?
     var total_cases :String?
-   var total_cases_per1 : String?
-   var total_deaths : String
+    var total_cases_per1 : String?
+    var total_deaths : String
     var total_recovered : String
+    var date : Date?
     
     
-    
-    func removeDuplicateDates(data : [stat_by_country]) -> [stat_by_country]{
+     func getdate() -> Date?{
+        var finaldate : Date?
+        if let string = self.record_date{
+            let start = string.index(string.startIndex, offsetBy: 0)
+            let end = string.index(string.endIndex, offsetBy: -13)
+            let range = start..<end
+            let substring = string[range]
+            let finalDate = String(substring)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let datee = dateFormatter.date(from:finalDate)!
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.year, .month, .day], from: datee)
+            let ffd = calendar.date(from: components)
+            finaldate = ffd
+            print(finaldate)
+            return finaldate
+            
+        }else{
+            return finaldate
+        }
         
-        return data
+    }
+    static  func removeDuplicateDates(data : [stat_by_country]){
+         //let s = data[0].getdate()
+        
+        
+        
     }
     
 }

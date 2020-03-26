@@ -69,8 +69,9 @@ class EachCountryViewController: UIViewController {
             if let data = data{
                 let stats = data.stat_by_country
                 self?.dataList = stats
+                self?.tableViewList = self!.dataList
+                stat_by_country.removeDuplicateDates(data: self!.dataList)
                 DispatchQueue.main.async {
-                    self?.tableViewList = self!.dataList
                     self?.lastUpdateTableView.reloadData()
                 }
             }else{
