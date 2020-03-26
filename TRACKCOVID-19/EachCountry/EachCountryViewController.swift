@@ -87,7 +87,7 @@ class EachCountryViewController: UIViewController {
                     let data = covid.data.covid19Stats
                     self?.stateList = data
                 }
-               
+                
             }
         }
         super.viewDidLoad()
@@ -136,7 +136,7 @@ extension EachCountryViewController {
         setupTopView()
         setupBottomView()
         setupLastUpdateTableView()
-        setuppopView()
+        //setuppopView()
         
     }
     
@@ -161,51 +161,74 @@ extension EachCountryViewController {
         deathsLabel.text = "Death: \(deathToll)"
         deathsLabel.font = font
         deathsLabel.adjustsFontSizeToFitWidth = true
-         deathsLabel.textColor = darkBlue
+        deathsLabel.textColor = darkBlue
         
     }
     
-    func setuppopView(){
-        let width = view.frame.width - 150
-        let height = view.frame.height - 550
+    func setuppopView(deathText : String , activeText : String , recovered : String, Province : String){
+        let width = view.frame.width / 1.2 - 15
+        let height = view.frame.height / 2.5
         let x = (view.frame.width - width)/2
         let y = view.frame.height
         originalPopUpY = y
         popView.frame = CGRect(x: x, y: y, width: width, height: height)
         popView.layer.cornerRadius = 10
-        popView.backgroundColor = darkBlue
+        popView.backgroundColor = .white
+        popView.layer.shadowColor = UIColor.black.cgColor
+        popView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        popView.layer.shadowRadius = 0.5
+        popView.layer.shadowOpacity = 0.3
         popView.layer.cornerRadius = 10
         view.addSubview(popView)
         
+        
+        
+        
+        let genHeight = popView.frame.height / 4.5
         let button = UIButton(frame: CGRect(x: popView.frame.width - 30, y: 0, width: 30, height: 30))
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(handlepopcancelButton), for: .touchUpInside)
         button.setImage(UIImage(named: "cancel.png"), for: .normal)
         popView.addSubview(button)
         
+        
+        let countryLabel = UILabel()
+        countryLabel.frame = CGRect(x: 20, y: 0  , width: width - 80 , height: genHeight - 20)
+        countryLabel.backgroundColor = .white
+        countryLabel.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 20)
+        countryLabel.text  = Province
+        countryLabel.layer.cornerRadius = 20
+        //countryLabel.adjustsFontSizeToFitWidth = true
+        popView.addSubview(countryLabel)
+        
+        
         let activeLabel = UILabel()
-        activeLabel.frame = CGRect(x: 20, y: 40, width: width - 35, height: 50)
+        activeLabel.frame = CGRect(x: 20, y: height/4 - 19 , width: width - 35 , height: genHeight)
         activeLabel.backgroundColor = .white
         activeLabel.font = font
-        activeLabel.text  = "This is the activeLabel"
-        //activeLabel.layer.cornerRadius = 20
+        activeLabel.text  = activeText
+        activeLabel.layer.cornerRadius = 20
+        activeLabel.adjustsFontSizeToFitWidth = true
         popView.addSubview(activeLabel)
-            
+        
+        
         
         let deathLabel = UILabel()
-        deathLabel.frame = CGRect(x: 20, y: 105, width: width - 35 , height: 50)
+        deathLabel.frame = CGRect(x: 20, y: activeLabel.frame.origin.y + (popView.frame.height / 4) + 5, width: width - 35 , height: genHeight)
         deathLabel.backgroundColor = .white
         deathLabel.font = font
-        deathLabel.text = "The is the deathLabel"
+        deathLabel.text = deathText
         deathLabel.layer.cornerRadius = 10
+        deathLabel.adjustsFontSizeToFitWidth = true
         popView.addSubview(deathLabel)
         
         let recoveredLabel = UILabel()
-        recoveredLabel.frame = CGRect(x: 20, y: 170, width: width - 35 , height: 50)
+        recoveredLabel.frame = CGRect(x: 20, y: deathLabel.frame.origin.y + (popView.frame.height / 4) + 5 , width: width - 35 , height: genHeight)
         recoveredLabel.backgroundColor = .white
         recoveredLabel.font = font
-        recoveredLabel.text = "The is recovered Label"
+        recoveredLabel.text = recovered
         recoveredLabel.layer.cornerRadius = 10
+        recoveredLabel.adjustsFontSizeToFitWidth = true
         popView.addSubview(recoveredLabel)
         
         
@@ -218,7 +241,9 @@ extension EachCountryViewController {
     }
     
     func displaypopView(){
+     
         UIView.animate(withDuration: 0.5, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+            
             self.popView.frame.origin.y = self.segmentedView.frame.midY
         }, completion: nil)
     }
@@ -241,7 +266,7 @@ extension EachCountryViewController {
         recoveredLabel.font = font
         recoveredLabel.text = "Recovered: \(recovery ?? 0)"
         recoveredLabel.adjustsFontSizeToFitWidth = true
-         recoveredLabel.textColor = darkBlue
+        recoveredLabel.textColor = darkBlue
         
     }
     
@@ -258,6 +283,7 @@ extension EachCountryViewController {
         activeCasesLabel.numberOfLines = 2
         activeCasesLabel.clipsToBounds = true
         activeCasesLabel.textColor = darkBlue
+        
     }
     
     func setupCountryImage(){
@@ -325,11 +351,23 @@ extension EachCountryViewController {
     func setupTopView(){
         //topView.backgroundColor = UIColor.init(hex: Constants.lightblue)?.withAlphaComponent(0.8)
         topView.clipsToBounds = true
+        topView.layer.shadowColor = UIColor.black.cgColor
+        topView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        topView.layer.shadowRadius = 0.5
+        topView.layer.shadowOpacity = 0.3
         topView.layer.cornerRadius = 10
+        
     }
     
     func setupBottomView(){
         bottomView.backgroundColor = .white
+//        bottomView.layer.shadowColor = UIColor.black.cgColor
+//        bottomView.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
+//        bottomView.layer.shadowRadius = 0.3
+//        bottomView.layer.shadowOpacity = 0.3
+//        bottomView.layer.cornerRadius = 10
+//        lastUpdateTableView.layer.cornerRadius = 5
+        
         
     }
     
@@ -382,7 +420,60 @@ extension EachCountryViewController : UITableViewDelegate , UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        displaypopView()
+        
+        if index == 0{
+            let finalList = tableViewList as! [stat_by_country]
+            let activecases = finalList[indexPath.row].total_cases ?? "0"
+            let finalSTotalCase = "At this time there was \(activecases) Total cases"
+            
+            var deathcase = finalList[indexPath.row].total_deaths
+            if deathcase == ""{
+                deathcase = "0"
+            }
+            let finalDeath = "At this time there was \(deathcase) Total Deaths"
+            
+            let recovered = finalList[indexPath.row].total_recovered
+            let finalrecovered = "At this time there was \(recovered) Total Recoveries"
+            
+            setuppopView(deathText: finalDeath, activeText: finalSTotalCase, recovered: finalrecovered , Province: finalList[indexPath.row].country_name ?? "")
+            displaypopView()
+            
+            
+        }else{
+            let finalList = tableViewList as! [CovidStats]
+             let country = finalList[indexPath.row].country
+            let stats = finalList[indexPath.row]
+            if finalList.count == 1{
+               
+    
+                let Copnfrimedstring = "There are \(countryInformation?.cases.total ?? 0) confimed cases in \(country)"
+                var deathstring = "There are \(countryInformation?.deaths.total ?? 0) confimed deaths in \(country)"
+                let deaths = countryInformation?.deaths.total ?? 0
+                if deaths == 1 {
+                    deathstring = "There is \(deaths) confimed death in \(country)"
+                }
+                var recoveredstring = "There are \(countryInformation?.cases.recovered ?? 0) confimed recoveries in \(country)"
+                let recoveries = countryInformation?.cases.recovered ?? 0
+                if  recoveries == 1{
+                     recoveredstring = "There is \(recoveries) confimed reovery in \(country)"
+                }
+                
+                setuppopView(deathText: deathstring, activeText: Copnfrimedstring, recovered: recoveredstring , Province: country)
+                displaypopView()
+                
+                
+            }else{
+                //cell.textLabel?.text = finalList[indexPath.row].province
+                let Confrimedstring = "There are \(stats.confirmed) confimed cases in \(stats.province)"
+                let deathstring = "There are \(stats.deaths) confimed deaths in \(stats.province)"
+                let recoveredstring = "There are \(stats.recovered) confimed recovveries in \(stats.province)"
+                setuppopView(deathText: deathstring, activeText: Confrimedstring, recovered: recoveredstring , Province: stats.province)
+                displaypopView()
+                
+            }
+            
+        }
+       
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -397,7 +488,11 @@ extension EachCountryViewController : UITableViewDelegate , UITableViewDataSourc
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOffset = CGSize(width: 1, height: 1)
+        label.layer.shadowRadius = 0.5
+        label.layer.shadowOpacity = 0.3
+        label.layer.cornerRadius = 10
         if index == 0 {
             label.text = "Get updates Every 24Hours"
             label.font = font
@@ -411,3 +506,5 @@ extension EachCountryViewController : UITableViewDelegate , UITableViewDataSourc
     
     
 }
+
+
