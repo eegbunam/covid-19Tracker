@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ANActivityIndicator
 
 protocol CountryListVCDelegate {
     func didclickCountry(stats : response
@@ -21,6 +22,10 @@ class CountryListVC: UIViewController {
     //var searchCovidList = [response]()
     var delegate : CountryListVCDelegate?
     var isSearching : Bool = false
+    
+    let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
+       let darkBlue = UIColor(hex: Constants.darkblue)
+       
     override func viewDidAppear(_ animated: Bool) {
         everythingInternet()
     }
@@ -39,8 +44,10 @@ class CountryListVC: UIViewController {
     }
     
     func everythingInternet(){
+        self.showIndicator(CGSize(width: 40, height: 40), message: "Loading...", messageFont: font, messageTopMargin: 0, animationType: .ballZigZagDeflect, color: darkBlue, padding: 0, displayTimeThreshold: 5.0, minimumDisplayTime: 0.5)
         DataService.sharedClient.testEndPoint { [weak self](data) in
             guard let data = data else{
+                self?.hideIndicator()
                 print("not getting data")
                 //display view
                 fatalError()
@@ -51,6 +58,7 @@ class CountryListVC: UIViewController {
             genArr.sort(by: {$0[0].country < $1[0].country})
             DispatchQueue.main.async {
                 self?.countryListTableView.reloadData()
+                self?.hideIndicator()
             }
         }
         
@@ -189,7 +197,7 @@ class CountryListVC: UIViewController {
         var searchCovidList : [response] = []
         if !covidList.isEmpty{
             searchCovidList = covidList.filter({ (response) -> Bool in
-                return response.country.prefix(text.count) == text
+                return response.country.lowercased().prefix(text.count) == text.lowercased()
             })
             finalList.append(searchCovidList)
             

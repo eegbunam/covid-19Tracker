@@ -8,7 +8,7 @@
 
 import UIKit
 import BetterSegmentedControl
-
+import ANActivityIndicator
 
 class EachCountryViewController: UIViewController {
     
@@ -64,7 +64,15 @@ class EachCountryViewController: UIViewController {
     lazy var  tableViewList : Any = dataList
     
     override func viewDidLoad() {
+        view.isUserInteractionEnabled = false
         
+        let width = bottomView.frame.width
+        let height = bottomView.frame.height
+        let x = (view.frame.width - width)/2
+        let y = (view.frame.height - height)/2
+        let indicator = ANActivityIndicatorView(frame: CGRect(x: x, y: y, width: width, height: height), animationType: .ballZigZagDeflect, color: darkBlue, padding: 0)
+        bStack.addSubview(indicator)
+        indicator.startAnimating()
         DataService.sharedClient.testEndPointCountry(Country: countryInformation?.country ?? "") { [weak self](data) in
             if let data = data{
                 let stats = data.stat_by_country
@@ -73,9 +81,14 @@ class EachCountryViewController: UIViewController {
                 stat_by_country.removeDuplicateDates(data: self!.dataList)
                 DispatchQueue.main.async {
                     self?.lastUpdateTableView.reloadData()
+                    indicator.stopAnimating()
+                    self?.view.isUserInteractionEnabled = true
                 }
             }else{
                 print("data is nil")
+                indicator.stopAnimating()
+                // no data show view
+                self?.view.isUserInteractionEnabled = true
             }
             
         }
@@ -86,7 +99,13 @@ class EachCountryViewController: UIViewController {
                 if covid.message == "OK"{
                     let data = covid.data.covid19Stats
                     self?.stateList = data
+    
                 }
+                
+            }else{
+                //show view
+                self?.view.isUserInteractionEnabled = true
+                
                 
             }
         }
