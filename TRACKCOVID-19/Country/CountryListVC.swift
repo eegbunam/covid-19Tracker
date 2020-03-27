@@ -16,44 +16,74 @@ protocol CountryListVCDelegate {
 class CountryListVC: UIViewController {
     
     var countryListTableView = UITableView()
-    var covidList = [CovidStats]()
+    let searchBar = UISearchBar()
+    var covidList = [response]()
+    //var searchCovidList = [response]()
     var delegate : CountryListVCDelegate?
+    var isSearching : Bool = false
+    override func viewDidAppear(_ animated: Bool) {
+        everythingInternet()
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Pick a Country"
         setupnavigationBar()
         configureTableView()
+        setupSearchBar()
         
         
+        
+        
+    }
+    
+    func everythingInternet(){
         DataService.sharedClient.testEndPoint { [weak self](data) in
-            
-            
             guard let data = data else{
                 print("not getting data")
                 //display view
                 fatalError()
-                
             }
-            
             let list = data.response
+            self?.covidList = list
             self?.twodarray(response: list)
             genArr.sort(by: {$0[0].country < $1[0].country})
             DispatchQueue.main.async {
                 self?.countryListTableView.reloadData()
             }
         }
-       
+        
+        
     }
     
     func setupnavigationBar(){
-        
-        navigationController?.navigationBar.backgroundColor = UIColor.init(hex: Constants.darkblue)
-        navigationController?.navigationBar.isTranslucent = false
-        //navigationController?.navigationBar.barTintColor = UIColor.black
+        view.backgroundColor = .black
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.tintColor = UIColor.init(hex: Constants.darkblue)
+        navigationController?.navigationBar.barTintColor = UIColor.init(hex: Constants.lightblue)
         let font = UIFont(descriptor: UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.name: "ArialRoundedMTBold"]), size: 16)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.init(hex: Constants.darkblue) , .font: font , .strokeColor:  UIColor.white]
-        //navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.tintColor = UIColor.init(hex: Constants.lightblue)
+        search(shouldShow: false)
+        
+    }
+    
+    
+    @objc func  handleSearchBar(){
+        search(shouldShow: true)
+        searchBar.becomeFirstResponder()
+        
+    }
+    
+    func setupSearchBar(){
+        
+        searchBar.searchBarStyle = .default
+        searchBar.placeholder = " Search..."
+        searchBar.sizeToFit()
+        //searchBar.isTranslucent = false
+        //searchBar.backgroundImage = UIImage()
+        searchBar.delegate = self
+        
     }
     
     func removeAllDuplicates(stats : [CovidStats])-> [CovidStats]{
@@ -97,6 +127,7 @@ class CountryListVC: UIViewController {
                 
                 genArr.append(singlelist)
                 
+                
                 covidlist.removeAll { (response) -> Bool in
                     let removed = response.country
                     let removedletter = removed[removed.startIndex]
@@ -108,39 +139,7 @@ class CountryListVC: UIViewController {
         }
         
     }
-    func generate2Darray(){
-        var covidListCopy = covidList
-        if !covidListCopy.isEmpty{
-            while !covidListCopy.isEmpty{
-                let word = covidListCopy[0].country
-                let letter = word[word.startIndex]
-                var singleCovidarray = [CovidStats]()
-                singleCovidarray = covidListCopy.filter({ (stats) -> Bool in
-                    let anotherword = stats.country
-                    let closureLetter = anotherword[anotherword.startIndex]
-                    return closureLetter == letter
-                })
-                //filter array here
-                let finalsingle = removeAllDuplicates(stats: singleCovidarray)
-                generalArray.append(finalsingle)
-                
-                covidListCopy.removeAll { (stats) -> Bool in
-                    let removed = stats.country
-                    let removedletter = removed[removed.startIndex]
-                    return removedletter == letter
-                    
-                    
-                }
-                
-                
-                
-                
-                
-            }
-        }else{
-            fatalError()
-        }
-    }
+    
     
     
     
@@ -157,17 +156,46 @@ class CountryListVC: UIViewController {
     
     func nextvc(indexpath : IndexPath){
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "eachCountryVc") as! EachCountryViewController
-         self.delegate = vc
-        let name = genArr[indexpath.section][indexpath.row]
-          let stats = genArr[indexpath.section][indexpath.row]
-
-          delegate?.didclickCountry(stats: stats)
-       
+        self.delegate = vc
         
-
+        var stats = genArr[indexpath.section][indexpath.row]
         
-        
+        if isSearching{
+            stats = finalList[indexpath.section][indexpath.row]
+        }
+        delegate?.didclickCountry(stats: stats)
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    
+    func shouldShowBarButton(show: Bool){
+        if show{
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearchBar))
+        }else{
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+    func search(shouldShow : Bool){
+        shouldShowBarButton(show: !shouldShow)
+        searchBar.showsCancelButton = shouldShow
+        navigationItem.titleView = shouldShow ? searchBar : nil
+        
+    }
+    
+    func shouldsearchTableView(text : String , response : [response]){
+        let covidList = response
+        finalList.removeAll()
+        var searchCovidList : [response] = []
+        if !covidList.isEmpty{
+            searchCovidList = covidList.filter({ (response) -> Bool in
+                return response.country.prefix(text.count) == text
+            })
+            finalList.append(searchCovidList)
+            
+            
+        }
+        
     }
     
     
@@ -178,21 +206,34 @@ class CountryListVC: UIViewController {
 extension CountryListVC : UITableViewDelegate , UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return genArr.count
+        if isSearching{
+            return finalList.count
+        }else{
+             return genArr.count
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return genArr[section][0].country[genArr[section][0].country.startIndex].uppercased()
-    }
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         let sView = UIView()
+        if isSearching{
+            
+            
+            if !finalList[section].isEmpty{
+                label.text = finalList[section][0].country[finalList[section][0].country.startIndex].uppercased()
+            }else{
+                 label.text = ""
+            }
+            
+        }else{
+            label.text = genArr[section][0].country[genArr[section][0].country.startIndex].uppercased()
+        }
         
-        label.text = genArr[section][0].country[genArr[section][0].country.startIndex].uppercased()
         
         label.frame = CGRect(x: 10, y: 13, width: 40, height: 20)
         label.backgroundColor = UIColor.init(hex: Constants.lightblue)
@@ -205,26 +246,57 @@ extension CountryListVC : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        if isSearching{
+            return finalList[section].count
+        }else{
+            return genArr[section].count
+        }
         
-        return genArr[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let imageView = UIImageView(image: UIImage(named: "right.png"))
         let cell = countryListTableView.dequeueReusableCell(withIdentifier:  Constants.countryListCellID) as! CountryCell
-        let stats = genArr[indexPath.section][indexPath.row]
+        if isSearching{
+            let stats = finalList[indexPath.section][indexPath.row]
+            cell.setCountryName(covidstats: stats)
+            cell.setcountryImage(covidstats: stats)
+            cell.selectionStyle = .none
+            cell.accessoryView = imageView
+        }else{
+            let stats = genArr[indexPath.section][indexPath.row]
+            cell.setCountryName(covidstats: stats)
+            cell.setcountryImage(covidstats: stats)
+            cell.selectionStyle = .none
+            cell.accessoryView = imageView
+        }
         
-        cell.setCountryName(covidstats: stats)
-        cell.setcountryImage(covidstats: stats)
-        cell.selectionStyle = .none
-        cell.accessoryView = imageView
+        
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
- 
+        
         nextvc(indexpath: indexPath)
     }
     
     
+}
+
+
+extension CountryListVC : UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        search(shouldShow: false)
+        isSearching = false
+        countryListTableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        isSearching = true
+        
+        
+        shouldsearchTableView(text: searchText, response: covidList)
+        countryListTableView.reloadData()
+    }
 }
