@@ -292,6 +292,7 @@ struct CovidStats : Codable , Hashable {
     var confirmed : Int
     var deaths : Int
     var recovered : Int
+    var keyId : String
     
 }
 
@@ -300,3 +301,13 @@ func ==(lhs : CovidStats , rhs : CovidStats) -> Bool{
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+//func presentPopUp(title : String , message : String) -> MDCAlertController{
+//    // Present a modal alert
+//    let alertController = MDCAlertController(title: title, message: message)
+//    let action = MDCAlertAction(title:"OK") { (action) in print("OK") }
+//    alertController.addAction(action)
+//
+//    return alertController
+//}

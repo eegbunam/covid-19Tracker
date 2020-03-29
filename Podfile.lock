@@ -7,8 +7,11 @@ PODS:
     - AWSCore (~> 2.13.0)
     - ReachabilitySwift (~> 5.0.0)
     - SQLite.swift (~> 0.12.2)
-  - AWSCore (2.13.0)
+  - AWSCore (2.13.1)
   - BetterSegmentedControl (1.3.0)
+  - Charts (3.4.0):
+    - Charts/Core (= 3.4.0)
+  - Charts/Core (3.4.0)
   - MaterialComponents/ActionSheet (107.4.0):
     - MaterialComponents/Availability
     - MaterialComponents/BottomSheet
@@ -92,6 +95,7 @@ DEPENDENCIES:
   - ANActivityIndicator
   - AWSAppSync (~> 3.1.0)
   - BetterSegmentedControl (~> 1.3)
+  - Charts
   - MaterialComponents/ActionSheet
   - MaterialComponents/Dialogs
 
@@ -102,6 +106,7 @@ SPEC REPOS:
     - AWSAppSync
     - AWSCore
     - BetterSegmentedControl
+    - Charts
     - MaterialComponents
     - MDFInternationalization
     - MDFTextAccessibility
@@ -113,8 +118,9 @@ SPEC CHECKSUMS:
   ANActivityIndicator: 44a996931d0c554cf157b31056603b23bbdbe76a
   AppSyncRealTimeClient: 610da868f8c56539a840ee848f968120a07a7b6f
   AWSAppSync: 269c0f5ab575ef072c3ea91bcb14354cbc348f0c
-  AWSCore: 167aba8cdaff6873193a66f062f41749c6c6a3d3
+  AWSCore: ec394695d054fa4136b20ccd22d8901faea5de04
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
+  Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   MaterialComponents: 52e2ade4684e3017eff7f62587b37522d217ea50
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
@@ -122,6 +128,6 @@ SPEC CHECKSUMS:
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
 
-PODFILE CHECKSUM: d962ed3ec5e9a02f2a7162f2ace90f63cb4219a4
+PODFILE CHECKSUM: 5aa12218a93105fb78ae0819e54d063fd8f27daa
 
 COCOAPODS: 1.9.1

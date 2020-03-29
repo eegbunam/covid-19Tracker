@@ -9,6 +9,7 @@
 import UIKit
 import BetterSegmentedControl
 import ANActivityIndicator
+import Charts
 
 class EachCountryViewController: UIViewController {
     
@@ -62,6 +63,7 @@ class EachCountryViewController: UIViewController {
     var dataList : [stat_by_country] = []
     var stateList : [CovidStats] = []
     lazy var  tableViewList : Any = dataList
+     let graphView = LineChartView()
     
     override func viewDidLoad() {
         view.isUserInteractionEnabled = false
@@ -80,9 +82,11 @@ class EachCountryViewController: UIViewController {
                 self?.tableViewList = self!.dataList
                 stat_by_country.removeDuplicateDates(data: self!.dataList)
                 DispatchQueue.main.async {
+                    self?.setUpgraph()
                     self?.lastUpdateTableView.reloadData()
                     indicator.stopAnimating()
                     self?.view.isUserInteractionEnabled = true
+                  
                 }
             }else{
                 print("data is nil")
@@ -141,6 +145,8 @@ extension EachCountryViewController : CountryListVCDelegate{
 }
 extension EachCountryViewController {
     
+    
+    
     func setupView(){
         //segmentedView.isHidden = true
         //segmentedView.addSubview(setupsegmantedControl())
@@ -157,7 +163,62 @@ extension EachCountryViewController {
         setupLastUpdateTableView()
         //setuppopView()
         
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    ////setup graph ////
+    
+    func setUpgraph(){
+        // setupgraph only after datalist is available
+    
+        bottomView.addSubview(graphView)
+        graphView.backgroundColor = .lightGray
+        graphView.pin(to: bottomView)
+        graphView.tag = 10
+        //updateGrpah()
+        
+    }
+    func updateGrpah(){
+        var lineChartEntry  = [ChartDataEntry]()
+        
+        for values in dataList{
+            
+        }
+        
+        for i in 0...dataList.count{
+            if let y = dataList[i].active_cases?.replacingOccurrences(of: ",", with: ""
+                ){
+                let newy = Double(y)!
+                 let value = ChartDataEntry(x: Double(i), y: newy)
+                lineChartEntry.append(value)
+            }else{
+                print("worng values")
+            }
+        }
+        
+        let line1 = LineChartDataSet(entries: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
+
+               line1.colors = [NSUIColor.blue] //Sets the colour to blue
+
+
+               let data = LineChartData() //This is the object that will be added to the chart
+
+               data.addDataSet(line1) //Adds the line to the dataSet
+               
+
+               graphView.data = data //finally - it adds the chart data to the chart and causes an update
+
+               graphView.chartDescription?.text = "My awesome chart" // Here we set the description for the graph
+    }
+    
+    
+    ////end setup graph ////
     
     func setupLastUpdateTableView(){
         bottomView.addSubview(lastUpdateTableView)
@@ -331,12 +392,12 @@ extension EachCountryViewController {
         let x = (view.frame.width - width)/2
         let control = BetterSegmentedControl(
             frame: CGRect(x: segmentedView.frame.origin.x, y: segmentedView.frame.origin.y, width: segmentedView.frame.width , height: segmentedView.frame.height - 10),
-            segments: LabelSegment.segments(withTitles: ["Latest Update", "States"],
+            segments: LabelSegment.segments(withTitles: ["Updates", "Province", "Charts"],
                                             normalFont:font,
                                             normalTextColor: darkBlue,
                                             selectedFont:font,
                                             selectedTextColor: .white),
-            index: 0,
+            index: 2,
             options: [.backgroundColor(.white),
                       .indicatorViewBackgroundColor(UIColor.init(hex: Constants.lightblue) ?? UIColor.lightGray),
                       .cornerRadius(15.0)
@@ -350,19 +411,43 @@ extension EachCountryViewController {
         
     }
     
+    func removeGraph(){
+        
+        for view in bottomView.subviews{
+            if view.tag == 10{
+                view.isHidden = true
+                view.removeFromSuperview()
+            }
+        }
+        
+    }
+    
     
     @objc func segmentedControlFuntion(_ sender : BetterSegmentedControl){
         if sender.index == 0{
+
+            //removeGraph()
             tableViewList = dataList
             index = 0
+            lastUpdateTableView.reloadData()
+            print(sender.index)
+             bottomView.bringSubviewToFront(lastUpdateTableView)
         }
-        else{
+         if sender.index == 1 {
             index = 1
             print("index is 1")
             tableViewList = stateList
-            
+            lastUpdateTableView.reloadData()
+            print(sender.index)
+             bottomView.bringSubviewToFront(lastUpdateTableView)
         }
-        lastUpdateTableView.reloadData()
+        
+        if sender.index == 2{
+            print(sender.index)
+           
+             bottomView.bringSubviewToFront(graphView)
+        }
+        
         
     }
     
@@ -380,13 +465,7 @@ extension EachCountryViewController {
     
     func setupBottomView(){
         bottomView.backgroundColor = .white
-//        bottomView.layer.shadowColor = UIColor.black.cgColor
-//        bottomView.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
-//        bottomView.layer.shadowRadius = 0.3
-//        bottomView.layer.shadowOpacity = 0.3
-//        bottomView.layer.cornerRadius = 10
-//        lastUpdateTableView.layer.cornerRadius = 5
-        
+
         
     }
     
@@ -428,7 +507,8 @@ extension EachCountryViewController : UITableViewDelegate , UITableViewDataSourc
             if finalList.count == 1{
                 cell.textLabel?.text = finalList[indexPath.row].country
             }else{
-                cell.textLabel?.text = finalList[indexPath.row].province
+                cell.textLabel?.text = finalList[indexPath.row].keyId
+               
             }
             
         }

@@ -11,6 +11,7 @@ target 'TRACKCOVID-19' do
     pod 'ANActivityIndicator'
     pod 'MaterialComponents/ActionSheet'
     pod 'MaterialComponents/Dialogs'
+    pod 'Charts'
     
 
 end
