@@ -46,6 +46,7 @@
 		43E37F8824276EED001F3505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E37F8B24276EED001F3505 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43E37F8D24276EED001F3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43E68351243167F2009B116D /* TRACKCOVID-19.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TRACKCOVID-19.entitlements"; sourceTree = "<group>"; };
 		43FDBB88242954DE00DE363D /* segmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = segmentView.swift; sourceTree = "<group>"; };
 		43FDBB8B24297CC000DE363D /* EachCountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EachCountryViewController.swift; sourceTree = "<group>"; };
 		668A0CB2E737BFFD3B8F2C2B /* Pods_TRACKCOVID_19.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TRACKCOVID_19.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +125,7 @@
 		43E37F7E24276EE9001F3505 /* TRACKCOVID-19 */ = {
 			isa = PBXGroup;
 			children = (
+				43E68351243167F2009B116D /* TRACKCOVID-19.entitlements */,
 				4386AEC2242873C000225F66 /* DataService */,
 				4386AEB42428466A00225F66 /* Extenions-Utilities */,
 				43E37F7F24276EE9001F3505 /* AppDelegate.swift */,
@@ -437,6 +439,7 @@
 			baseConfigurationReference = 91C19A9C5F63531F08DB9738 /* Pods-TRACKCOVID-19.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "TRACKCOVID-19/TRACKCOVID-19.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 63XVB98W2T;
 				INFOPLIST_FILE = "TRACKCOVID-19/Info.plist";
@@ -447,7 +450,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ebukaegbunam.TRACKCOVID-19";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -456,6 +459,7 @@
 			baseConfigurationReference = 1057AB00B028B0F8DE4B379D /* Pods-TRACKCOVID-19.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "TRACKCOVID-19/TRACKCOVID-19.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 63XVB98W2T;
 				INFOPLIST_FILE = "TRACKCOVID-19/Info.plist";
@@ -466,7 +470,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ebukaegbunam.TRACKCOVID-19";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

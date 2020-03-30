@@ -83,6 +83,8 @@ class EachCountryViewController: UIViewController {
                 stat_by_country.removeDuplicateDates(data: self!.dataList)
                 DispatchQueue.main.async {
                     self?.setUpgraph()
+                   
+                    self?.bottomView.bringSubviewToFront(self!.lastUpdateTableView)
                     self?.lastUpdateTableView.reloadData()
                     indicator.stopAnimating()
                     self?.view.isUserInteractionEnabled = true
@@ -397,7 +399,7 @@ extension EachCountryViewController {
                                             normalTextColor: darkBlue,
                                             selectedFont:font,
                                             selectedTextColor: .white),
-            index: 2,
+            index: 0,
             options: [.backgroundColor(.white),
                       .indicatorViewBackgroundColor(UIColor.init(hex: Constants.lightblue) ?? UIColor.lightGray),
                       .cornerRadius(15.0)
